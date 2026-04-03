@@ -1,0 +1,52 @@
+info:
+  name: Build Envelope
+  type: http
+  seq: 2
+  tags:
+    - smoke
+    - ci
+    - release-gate
+
+http:
+  method: POST
+  url: "{{bruno_echo_url}}"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: X-Bruno-Platform
+      value: "{{platform_name}}"
+    - name: X-Bruno-Build
+      value: "{{build_id}}"
+    - name: X-Bruno-Commit
+      value: "{{commit_sha}}"
+  body:
+    type: json
+    data: |-
+      {
+        "check": "build-envelope",
+        "buildId": "{{build_id}}",
+        "commitSha": "{{commit_sha}}",
+        "owner": "{{demo_owner}}"
+      }
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("status should be 200", function () {
+          expect(res.status).to.equal(200);
+        });
+
+        test("build id should be echoed in the response body", function () {
+          expect(res.body.buildId).to.equal(bru.getVar("build_id"));
+        });
+
+        test("platform header should round-trip through the echo server", function () {
+          expect(res.headers["x-bruno-platform"]).to.equal(bru.getVar("platform_name"));
+        });
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  Shows body assertions and echoed headers in a single request.

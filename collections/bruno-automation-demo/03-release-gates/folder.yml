@@ -1,0 +1,7 @@
+info:
+  name: 03 Release Gates
+  type: folder
+  seq: 3
+
+docs: |-
+  Requests that look natural as pre-deploy and post-deploy quality gates.

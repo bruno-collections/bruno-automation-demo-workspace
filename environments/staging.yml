@@ -1,0 +1,32 @@
+name: staging
+variables:
+  - name: bruno_echo_url
+    value: https://echo.usebruno.com
+    enabled: true
+    secret: false
+    type: text
+  - name: platform_name
+    value: Azure Pipelines
+    enabled: true
+    secret: false
+    type: text
+  - name: target_environment
+    value: staging
+    enabled: true
+    secret: false
+    type: text
+  - name: build_id
+    value: staging-run-001
+    enabled: true
+    secret: false
+    type: text
+  - name: commit_sha
+    value: staging-demo-sha
+    enabled: true
+    secret: false
+    type: text
+  - name: demo_owner
+    value: bruno-devrel
+    enabled: true
+    secret: false
+    type: text

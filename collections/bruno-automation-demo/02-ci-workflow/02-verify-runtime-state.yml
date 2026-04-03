@@ -1,0 +1,46 @@
+info:
+  name: Verify Runtime State
+  type: http
+  seq: 2
+  tags:
+    - workflow
+    - ci
+    - demo
+
+http:
+  method: POST
+  url: "{{bruno_echo_url}}"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "check": "verify-runtime-state",
+        "previousRunId": "{{echoed_run_id}}",
+        "previousCommitSha": "{{echoed_commit_sha}}",
+        "platform": "{{echoed_platform}}"
+      }
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("status should be 200", function () {
+          expect(res.status).to.equal(200);
+        });
+
+        test("previous run id should come from the first workflow request", function () {
+          expect(res.body.previousRunId).to.equal(bru.getVar("echoed_run_id"));
+        });
+
+        test("previous commit sha should come from the first workflow request", function () {
+          expect(res.body.previousCommitSha).to.equal(bru.getVar("echoed_commit_sha"));
+        });
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  A clean chained follow-up request for the collection runner demo.

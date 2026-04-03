@@ -1,0 +1,64 @@
+info:
+  name: Send Build Context
+  type: http
+  seq: 1
+  tags:
+    - workflow
+    - ci
+    - demo
+
+http:
+  method: POST
+  url: "{{bruno_echo_url}}"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: X-Bruno-Platform
+      value: "{{platform_name}}"
+    - name: X-Bruno-Run
+      value: "{{run_id}}"
+  body:
+    type: json
+    data: |-
+      {
+        "check": "send-build-context",
+        "platform": "{{platform_name}}",
+        "environment": "{{target_environment}}",
+        "buildId": "{{build_id}}",
+        "commitSha": "{{commit_sha}}",
+        "owner": "{{demo_owner}}",
+        "runId": "{{run_id}}"
+      }
+
+runtime:
+  scripts:
+    - type: before-request
+      code: |-
+        const existing = bru.getVar("run_id");
+        if (!existing) {
+          bru.setVar("run_id", `run-${Date.now()}`);
+        }
+    - type: after-response
+      code: |-
+        bru.setVar("echoed_run_id", res.body.runId);
+        bru.setVar("echoed_commit_sha", res.body.commitSha);
+        bru.setVar("echoed_platform", res.body.platform);
+    - type: tests
+      code: |-
+        test("status should be 200", function () {
+          expect(res.status).to.equal(200);
+        });
+
+        test("run id should be echoed in the response body", function () {
+          expect(res.body.runId).to.equal(bru.getVar("run_id"));
+        });
+
+        test("captured run id should be saved for the next request", function () {
+          expect(bru.getVar("echoed_run_id")).to.be.a("string");
+        });
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  Sends CI metadata and stores runtime values for the next request.

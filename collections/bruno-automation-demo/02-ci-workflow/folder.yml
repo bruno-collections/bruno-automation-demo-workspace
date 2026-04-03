@@ -1,0 +1,7 @@
+info:
+  name: 02 CI Workflow
+  type: folder
+  seq: 2
+
+docs: |-
+  Demonstrates runtime variables and a simple chained CI flow.

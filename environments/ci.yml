@@ -1,0 +1,14 @@
+name: ci
+variables:
+  - name: bruno_echo_url
+    value: https://echo.usebruno.com
+  - name: platform_name
+    value: GitHub Actions
+  - name: target_environment
+    value: ci
+  - name: build_id
+    value: ci-run-001
+  - name: commit_sha
+    value: ci-demo-sha
+  - name: demo_owner
+    value: bruno-devrel

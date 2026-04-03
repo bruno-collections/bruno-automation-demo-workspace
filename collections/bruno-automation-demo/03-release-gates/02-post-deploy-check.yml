@@ -1,0 +1,50 @@
+info:
+  name: Post-Deploy Check
+  type: http
+  seq: 2
+  tags:
+    - release-gate
+    - ci
+    - staging
+
+http:
+  method: POST
+  url: "{{bruno_echo_url}}"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: X-Bruno-Gate
+      value: post-deploy
+    - name: X-Bruno-Commit
+      value: "{{commit_sha}}"
+  body:
+    type: json
+    data: |-
+      {
+        "check": "post-deploy",
+        "deploymentStatus": "ready",
+        "commitSha": "{{commit_sha}}",
+        "verifiedBy": "{{platform_name}}"
+      }
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("status should be 200", function () {
+          expect(res.status).to.equal(200);
+        });
+
+        test("deployment status should be ready", function () {
+          expect(res.body.deploymentStatus).to.equal("ready");
+        });
+
+        test("commit header should round-trip through the echo server", function () {
+          expect(res.headers["x-bruno-commit"]).to.equal(bru.getVar("commit_sha"));
+        });
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  A final release gate that looks good in both Bruno and CI logs.

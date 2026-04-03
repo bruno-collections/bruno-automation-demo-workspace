@@ -1,0 +1,14 @@
+opencollection: 1.0.0
+info:
+  name: "Bruno Automation Demo Workspace"
+  type: workspace
+
+collections:
+  - name: "Bruno Automation Demo"
+    path: "collections/bruno-automation-demo"
+
+specs:
+
+docs: ''
+
+activeEnvironmentUid: 953spa000000000000000

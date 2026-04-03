@@ -1,0 +1,7 @@
+info:
+  name: 01 Smoke Checks
+  type: folder
+  seq: 1
+
+docs: |-
+  Fast checks that look clean in Bruno and in CI logs.

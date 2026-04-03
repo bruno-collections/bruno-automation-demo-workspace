@@ -1,0 +1,45 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pr:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - checkout: self
+
+  - task: NodeTool@0
+    inputs:
+      versionSpec: "20.x"
+    displayName: Use Node.js 20
+
+  - script: npm install -g @usebruno/cli
+    displayName: Install Bruno CLI
+
+  - script: mkdir -p reports
+    displayName: Prepare report directory
+
+  - script: |
+      cd collections/bruno-automation-demo
+      bru run \
+        --global-env ci \
+        --workspace-path ../.. \
+        --tags smoke,workflow,release-gate \
+        --env-var platform_name="Azure Pipelines" \
+        --env-var build_id="$(Build.BuildId)" \
+        --env-var commit_sha="$(Build.SourceVersion)" \
+        --reporter-html ../../reports/azure-pipelines-report.html
+    displayName: Run Bruno demo collection
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: reports
+      ArtifactName: bruno-report
+      publishLocation: Container
+    displayName: Publish Bruno report

@@ -1,0 +1,40 @@
+opencollection: 1.0.0
+
+info:
+  name: Bruno Automation Demo
+config:
+  proxy:
+    inherit: true
+    config:
+      protocol: http
+      hostname: ""
+      port: ""
+      auth:
+        username: ""
+        password: ""
+      bypassProxy: ""
+
+docs:
+  content: |-
+    # Bruno Automation Demo
+
+    A compact workspace that shows Bruno working in developer automation or CI flows.
+
+    ## Flow
+
+    1. Open `workspace.yml` and choose the `ci` environment
+    2. Run `01 Smoke Checks`
+    3. Run `02 CI Workflow` to show runtime variables carrying across requests
+    4. Run `03 Release Gates`
+
+    ## Variables used
+
+    - `bruno_echo_url`
+    - `platform_name`
+    - `target_environment`
+    - `build_id`
+    - `commit_sha`
+    - `demo_owner`
+  type: text/markdown
+bundled: false
+extensions: {}

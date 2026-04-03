@@ -1,0 +1,48 @@
+info:
+  name: Platform Ping
+  type: http
+  seq: 1
+  tags:
+    - smoke
+    - ci
+    - github-actions
+    - jenkins
+    - azure
+
+http:
+  method: POST
+  url: "{{bruno_echo_url}}"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "check": "platform-ping",
+        "platform": "{{platform_name}}",
+        "environment": "{{target_environment}}",
+        "collection": "Bruno Automation Demo"
+      }
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("status should be 200", function () {
+          expect(res.status).to.equal(200);
+        });
+
+        test("platform should match the active environment", function () {
+          expect(res.body.platform).to.equal(bru.getVar("platform_name"));
+        });
+
+        test("environment should match the active environment", function () {
+          expect(res.body.environment).to.equal(bru.getVar("target_environment"));
+        });
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  A clean first request for showing Bruno running the same check locally and in CI.
