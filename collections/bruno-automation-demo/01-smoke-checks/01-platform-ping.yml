@@ -34,15 +34,17 @@ runtime:
         });
 
         test("platform should match the active environment", function () {
-          expect(res.body.platform).to.equal(bru.getVar("platform_name"));
+          expect(res.body.platform).to.equal(bru.getGlobalEnvVar("platform_name"));
         });
 
         test("environment should match the active environment", function () {
-          expect(res.body.environment).to.equal(bru.getVar("target_environment"));
+          expect(res.body.environment).to.equal(bru.getGlobalEnvVar("target_environment"));
         });
 
 settings:
   encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
 
-docs: |-
-  A clean first request for showing Bruno running the same check locally and in CI.
+docs: A clean first request for showing Bruno running the same check locally and in CI.

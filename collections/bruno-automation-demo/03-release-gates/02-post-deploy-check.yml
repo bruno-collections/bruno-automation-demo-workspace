@@ -40,11 +40,13 @@ runtime:
         });
 
         test("commit header should round-trip through the echo server", function () {
-          expect(res.headers["x-bruno-commit"]).to.equal(bru.getVar("commit_sha"));
+          expect(res.headers["x-bruno-commit"]).to.equal(bru.getGlobalEnvVar("commit_sha"));
         });
 
 settings:
   encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
 
-docs: |-
-  A final release gate that looks good in both Bruno and CI logs.
+docs: A final release gate that looks good in both Bruno and CI logs.

@@ -38,15 +38,17 @@ runtime:
         });
 
         test("build id should be echoed in the response body", function () {
-          expect(res.body.buildId).to.equal(bru.getVar("build_id"));
+          expect(res.body.buildId).to.equal(bru.getGlobalEnvVar("build_id"));
         });
 
         test("platform header should round-trip through the echo server", function () {
-          expect(res.headers["x-bruno-platform"]).to.equal(bru.getVar("platform_name"));
+          expect(res.headers["x-bruno-platform"]).to.equal(bru.getGlobalEnvVar("platform_name"));
         });
 
 settings:
   encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
 
-docs: |-
-  Shows body assertions and echoed headers in a single request.
+docs: Shows body assertions and echoed headers in a single request.

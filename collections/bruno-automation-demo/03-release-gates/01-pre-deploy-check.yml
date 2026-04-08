@@ -34,7 +34,7 @@ runtime:
         });
 
         test("gate should target the active environment", function () {
-          expect(res.body.environment).to.equal(bru.getVar("target_environment"));
+          expect(res.body.environment).to.equal(bru.getGlobalEnvVar("target_environment"));
         });
 
         test("gate header should be returned by the echo server", function () {
@@ -43,6 +43,8 @@ runtime:
 
 settings:
   encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
 
-docs: |-
-  Represents a pre-deploy validation gate in a pipeline.
+docs: Represents a pre-deploy validation gate in a pipeline.
