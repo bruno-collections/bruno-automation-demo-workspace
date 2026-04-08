@@ -1,0 +1,18 @@
+meta {
+  name: echo-bruno
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base-URL}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name":"Bruno"
+  }
+  
+}
