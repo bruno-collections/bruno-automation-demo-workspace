@@ -39,7 +39,9 @@ jobs:
             --reporter-html ../../reports/github-actions-report.html
 
       - name: Upload Bruno report
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
           name: bruno-report
           path: reports/github-actions-report.html
+          if-no-files-found: error
