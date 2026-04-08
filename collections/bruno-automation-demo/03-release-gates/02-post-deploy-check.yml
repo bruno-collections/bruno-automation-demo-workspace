@@ -40,7 +40,7 @@ runtime:
         });
 
         test("commit header should round-trip through the echo server", function () {
-          expect(res.headers["x-bruno-commit"]).to.equal(bru.getVar("commit_sha"));
+          expect(res.headers["x-bruno-commit"]).to.equal(bru.getEnvVar("commit_sha"));
         });
 
 settings:
